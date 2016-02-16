@@ -57,7 +57,7 @@ cprequire_test(["inline:com-chilipeppr-elem-dragdrop"], function (dd) {
         }, 5000);
     }
     //testLoadGcodePubSub();
-    testLoadGcodeFromUrlPubSub();
+    //testLoadGcodeFromUrlPubSub();
 
 } /*end_test*/ );
 
@@ -517,7 +517,19 @@ cpdefine("inline:com-chilipeppr-elem-dragdrop", ["chilipeppr_ready"], function (
                                     "</div>", 1000 * 3, true);
                             };
                             //reader.readAsDataURL(files[i]);
-                            reader.readAsText(files[i]);
+                            
+                            // var fileExtension = files[i].name.split();
+                            var fileExtension = files[i].name.substr(files[i].name.lastIndexOf('.') + 1);
+                            
+                            console.log ("Before File Reader. Extension:  ", fileExtension );
+                            
+                            if (fileExtension.match (/stl/g) ) {
+                                console.log ("We have an STL file.  Read as Array Buffer");
+                                reader.readAsArrayBuffer(files[i]);
+                            }
+                            else {
+                                reader.readAsText(files[i]);
+                            }
 
                         })(i);
                     }
