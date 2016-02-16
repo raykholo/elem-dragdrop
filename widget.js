@@ -43,7 +43,8 @@ cpdefine("inline:com-chilipeppr-elem-dragdrop", ["chilipeppr_ready"], function (
             "/com-chilipeppr-elem-dragdrop/ondropped":"When the file is dropped. Payload contains the file.",
             "/com-chilipeppr-elem-dragdrop/ondragover":"When the mouse is hovering over drop area so you can hilite/react. Empty payload.",
             "/com-chilipeppr-elem-dragdrop/ondragleave": "When mouse stops hovering so you can remove hilites. Empty payload.",
-            "/com-chilipeppr-elem-dragdrop/ondragdone" : "When user drops the file onto browser so you can remove hilites. Empty payload. Don't confuse this with ondropped which is the pubsub that actually contains file that was dropped."
+            "/com-chilipeppr-elem-dragdrop/ondragdone" : "When user drops the file onto browser so you can remove hilites. Empty payload. Don't confuse this with ondropped which is the pubsub that actually contains file that was dropped.",
+            "/com-chilipeppr-elem-dragdrop/ondroppedSTL":"When the file STL is dropped. Payload contains the raw file.",
         },
         subscribe: {
             "/com-chilipeppr-elem-dragdrop/loadGcode":"Send in this signal to load a string of Gcode with a payload of: { gcode: \"your gcode text as a string\", name: \"name of file as string so the recent file list can show the name\", lastModified: Date }. This signal will then generate an onDropped signal which is what all widgets listen to for loading of the file.",
@@ -493,7 +494,8 @@ cpdefine("inline:com-chilipeppr-elem-dragdrop", ["chilipeppr_ready"], function (
                             
                             if (fileExtension.match (/stl/g) ) {
                                 console.log ("We have an STL file.  Read as Array Buffer");
-                                reader.readAsArrayBuffer(files[i]);
+                                // reader.readAsArrayBuffer(files[i]);
+                                chilipeppr.publish("/com-chilipeppr-elem-dragdrop/ondroppedSTL", files[i]);
                             }
                             else {
                                 reader.readAsText(files[i]);
